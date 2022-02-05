@@ -89,6 +89,7 @@ app.get("/login", (req, res) => {
         if (error) {
             console.log(error);
             res.send('Error occur.');
+            conn.end();
         }
         else {
             if (results.length > 0) {
@@ -97,17 +98,20 @@ app.get("/login", (req, res) => {
                     console.log(`User ${user} login.`);
                     req.session.name = user;
                     res.send('ok');
-                } else {
+                    conn.end();
+                } 
+                else {
                     console.log(`User ${user} key in wrong password.`)
                     res.send('Wrong password!');
+                    conn.end();
                 }
             }
             else {
                 res.send('Account not found.');
+                conn.end();
             }
         }
     });
-    conn.end();
 });
 app.get("/register", (req, res) => {
     var username = req.query.name;
