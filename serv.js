@@ -2,8 +2,12 @@ const express = require("express");
 const session = require('express-session');
 const app = express();
 const port = 8888;
-const http = require("http");
-const server = http.createServer(app);
+const https = require("https");
+var options = {
+    key: fs.readFileSync('./ssl/privkey.pem'),
+    cert: fs.readFileSync('./ssl/cert.pem')
+};
+const server = https.createServer(options, app);
 const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
 // const fs = require("fs");
