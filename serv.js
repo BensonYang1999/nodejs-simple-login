@@ -194,7 +194,8 @@ app.get("/username", (req, res) => {
 app.get('/logout', (req, res) => {
     console.log(`User ${req.session.name} logout.`)
     req.session.destroy();
-    res.redirect('/home.html');
+    // res.redirect('/home.html');
+    res.end();
 })
 
 io.sockets.on("connection", socket => {
