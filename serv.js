@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require('express-session');
 const app = express();
+const fs = require("fs");
 const port = 8888;
 const https = require("https");
 var options = {
@@ -10,7 +11,6 @@ var options = {
 const server = https.createServer(options, app);
 const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
-// const fs = require("fs");
 const mysql = require('mysql');
 
 function createConnection() {
