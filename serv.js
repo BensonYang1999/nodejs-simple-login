@@ -8,14 +8,17 @@ const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const mysql = require('mysql');
-var conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'node',
-    password: 'nodejsnodejs',
-    database: 'nodejs',
-    port: 3306
-});
 
+function createConnection() {
+    var conn = mysql.createConnection({
+        host: 'localhost',
+        user: 'node',
+        password: 'nodejsnodejs',
+        database: 'nodejs',
+        port: 3306
+    });
+    return conn;
+};
 
 var customers;
 
@@ -80,6 +83,40 @@ app.get("/login", (req, res) => {
     // console.log(`attemp to login with ${user}`);
     // req.session.name = user;
     // res.send('ok');
+    /*pool.query('SELECT ', async function (error, results, fields) {
+        if (error) {
+            res.send({
+                "code": 400,
+                "failed": "error occurred",
+                "error": error
+            })
+        } else {
+            if (results.length > 0) {
+                const comparison = await bcrypt.compare(password, results[0].password)
+                if (comparison) {
+                    res.send({
+                        "code": 200,
+                        "success": "login successful",
+                        "id": results[0].id,
+                        "userName": results[0].user_name,
+                        "score": results[0].score,
+                        "gamesPlayed": results[0].gamesPlayed,
+                        "boardPref": results[0].boardPref
+                    })
+                } else {
+                    res.send({
+                        "code": 204,
+                        "error": "Email and password does not match"
+                    })
+                }
+            } else {
+                res.send({
+                    "code": 206,
+                    "error": "Email does not exist"
+                });
+            }
+        }
+    });*/
 });
 app.get("/register", (req, res) => {
     var username = req.query.name;
@@ -115,6 +152,7 @@ app.get("/register", (req, res) => {
         });
 
         // mysql version
+        conn = createConnection();
         conn.connect();
         conn.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
             if (error) {
