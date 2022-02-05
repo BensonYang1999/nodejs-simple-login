@@ -6,7 +6,6 @@ $(document).ready(function () {
         // var bcrypt = dcodeIO.bcrypt;
         // $('#pwd').val(bcrypt.hashSync($('#pwd').val(), 10));
         var formData = $("#login-form").serialize();
-        // console.log(formData);
         // socket.emit("log", formData);
         $.get({
             url: '/login',

@@ -99,7 +99,7 @@ app.get("/login", (req, res) => {
                     req.session.name = user;
                     res.send('ok');
                     conn.end();
-                } 
+                }
                 else {
                     console.log(`User ${user} key in wrong password.`)
                     res.send('Wrong password!');
@@ -186,7 +186,6 @@ app.get("/register", (req, res) => {
             }
         }
     });
-    
 });
 
 app.get("/username", (req, res) => {
