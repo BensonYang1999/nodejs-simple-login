@@ -116,7 +116,7 @@ app.get("/register", (req, res) => {
 
         // mysql version
         conn.connect();
-        pool.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
+        conn.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
             if (error) {
                 console.log("can not insert to database")
                 // res.send({
