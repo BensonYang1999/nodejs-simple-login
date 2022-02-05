@@ -7,6 +7,16 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
 const fs = require("fs");
+const mysql = require('mysql');
+var conn = mysql.createConnection({
+    host: 'localhost',
+    user: 'node',
+    password: 'nodejsnodejs',
+    database: 'nodejs',
+    port: 3306
+});
+
+
 var customers;
 
 // read user data
@@ -90,22 +100,44 @@ app.get("/register", (req, res) => {
         res.send('duplicated account name')
     }
     else {
-        customers.push({
+        var new_user = {
             "username": username,
             "mail": mail,
             "account": account,
             "password": pwd
-        })
+        };
+
+        // json version
+        customers.push(new_user);
         fs.writeFile("./userdata.json", JSON.stringify(customers), function (err) {
             if (err) throw err;
             console.log(`User ${account} register successful.`);
         });
+
+        // mysql version
+        conn.connect();
+        pool.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
+            if (error) {
+                console.log("can not insert to database")
+                // res.send({
+                //     "code": 400,
+                //     "failed": "error occurred",
+                //     "error": error
+                // })
+            } else {
+                console.log("user added to database sucessfully")
+                // res.send({
+                //     "code": 200,
+                //     "success": "user registered sucessfully"
+                // });
+            }
+        });
+        conn.end();
+
         res.send('ok');
     }
-
-
-
 });
+
 app.get("/username", (req, res) => {
     res.send(req.session.name);
 });
