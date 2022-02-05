@@ -61,7 +61,7 @@ app.use(express.static(__dirname + "/public"));
 app.get("/login", (req, res) => {
     var user = req.query.account;
 
-    var ret = false;
+    /*var ret = false;
     for (var i = 0; i < customers.length; i++) {
         if (customers[i].account == user) {
             ret = true;
@@ -78,45 +78,34 @@ app.get("/login", (req, res) => {
         }
     }
     if (!ret)
-        res.send('Account not found.');
+        res.send('Account not found.');*/
 
     // console.log(`attemp to login with ${user}`);
     // req.session.name = user;
     // res.send('ok');
-    /*pool.query('SELECT ', async function (error, results, fields) {
+    conn = createConnection();
+    conn.connect();
+    conn.query('SELECT * FROM users where account = ' + user, async function (error, results, fields) {
         if (error) {
-            res.send({
-                "code": 400,
-                "failed": "error occurred",
-                "error": error
-            })
+            console.log(error);
+            res.send('Error occur.');
         } else {
             if (results.length > 0) {
-                const comparison = await bcrypt.compare(password, results[0].password)
+                const comparison = await bcrypt.compare(req.query.pwd, results[0].password)
                 if (comparison) {
-                    res.send({
-                        "code": 200,
-                        "success": "login successful",
-                        "id": results[0].id,
-                        "userName": results[0].user_name,
-                        "score": results[0].score,
-                        "gamesPlayed": results[0].gamesPlayed,
-                        "boardPref": results[0].boardPref
-                    })
+                    console.log(`User ${user} login.`);
+                    req.session.name = user;
+                    res.send('ok');
                 } else {
-                    res.send({
-                        "code": 204,
-                        "error": "Email and password does not match"
-                    })
+                    console.log(`User ${user} key in wrong password.`)
+                    res.send('Wrong password!');
                 }
             } else {
-                res.send({
-                    "code": 206,
-                    "error": "Email does not exist"
-                });
+                res.send('Account not found.');
             }
         }
-    });*/
+    });
+    conn.end();
 });
 app.get("/register", (req, res) => {
     var username = req.query.name;
