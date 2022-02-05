@@ -19,6 +19,7 @@ function createConnection() {
     });
     return conn;
 };
+var conn;
 
 // read user data
 /*var customers;
@@ -158,26 +159,30 @@ app.get("/register", (req, res) => {
         if (error) {
             console.log(error);
             res.send('Error occur.');
+            conn.end();
         }
         else {
             if (results.length > 0) {
-                res.send('duplicated account name')
+                res.send('duplicated account name');
+                conn.end();
             }
             else {
                 conn.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
                     if (error) {
                         console.log(error)
                         res.send('Error occur.');
+                        conn.end();
                     }
                     else {
                         console.log("user added to database sucessfully.")
                         res.send('ok');
+                        conn.end();
                     }
                 });
             }
         }
     });
-    conn.end();
+    
 });
 
 app.get("/username", (req, res) => {
