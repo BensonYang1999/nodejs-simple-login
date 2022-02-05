@@ -84,7 +84,7 @@ app.get("/login", (req, res) => {
     // res.send('ok');
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + user + '\'', function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + user + '\'', async function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
@@ -154,7 +154,7 @@ app.get("/register", (req, res) => {
     // mysql version
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + account + '\'', function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + account + '\'', async function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
