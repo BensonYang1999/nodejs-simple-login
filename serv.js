@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
-const fs = require("fs");
+// const fs = require("fs");
 const mysql = require('mysql');
 
 function createConnection() {
@@ -20,9 +20,8 @@ function createConnection() {
     return conn;
 };
 
-var customers;
-
 // read user data
+/*var customers;
 fs.readFile("./userdata.json", "utf8", (err, jsonString) => {
     if (err) {
         console.log("Error reading file from disk:", err);
@@ -33,7 +32,7 @@ fs.readFile("./userdata.json", "utf8", (err, jsonString) => {
     } catch (err) {
         console.log("Error parsing JSON string:", err);
     }
-});
+});*/
 
 app.use(session({
     secret: 'key',
@@ -85,13 +84,14 @@ app.get("/login", (req, res) => {
     // res.send('ok');
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + user + '\'', async function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + user + '\'', function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
-        } else {
+        }
+        else {
             if (results.length > 0) {
-                const comparison = await bcrypt.compare(req.query.pwd, results[0].password)
+                const comparison = bcrypt.compareSync(req.query.pwd, results[0].password)
                 if (comparison) {
                     console.log(`User ${user} login.`);
                     req.session.name = user;
@@ -100,7 +100,8 @@ app.get("/login", (req, res) => {
                     console.log(`User ${user} key in wrong password.`)
                     res.send('Wrong password!');
                 }
-            } else {
+            }
+            else {
                 res.send('Account not found.');
             }
         }
@@ -112,12 +113,19 @@ app.get("/register", (req, res) => {
     var mail = req.query.mail;
     var account = req.query.account;
     var pwd = bcrypt.hashSync(req.query.pwd, 10);
-    var dup = false;
+    var new_user = {
+        "username": username,
+        "mail": mail,
+        "account": account,
+        "password": pwd
+    };
 
+    /*// json version
     // duplicated account
+    var dup = false;
     for (var i = 0; i < customers.length; i++) {
         if (customers[i].account == account) {
-            res.send("")
+            // res.send("")
             dup = true;
             break;
         }
@@ -133,36 +141,43 @@ app.get("/register", (req, res) => {
             "password": pwd
         };
 
-        // json version
         customers.push(new_user);
         fs.writeFile("./userdata.json", JSON.stringify(customers), function (err) {
             if (err) throw err;
             console.log(`User ${account} register successful.`);
         });
 
-        // mysql version
-        conn = createConnection();
-        conn.connect();
-        conn.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
-            if (error) {
-                console.log("can not insert to database")
-                // res.send({
-                //     "code": 400,
-                //     "failed": "error occurred",
-                //     "error": error
-                // })
-            } else {
-                console.log("user added to database sucessfully")
-                // res.send({
-                //     "code": 200,
-                //     "success": "user registered sucessfully"
-                // });
-            }
-        });
-        conn.end();
-
         res.send('ok');
-    }
+    }*/
+
+
+    // mysql version
+    conn = createConnection();
+    conn.connect();
+    conn.query('SELECT * FROM users where account = \'' + account + '\'', function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.send('Error occur.');
+        }
+        else {
+            if (results.length > 0) {
+                res.send('duplicated account name')
+            }
+            else {
+                conn.query('INSERT INTO users SET ?', new_user, function (error, results, fields) {
+                    if (error) {
+                        console.log(error)
+                        res.send('Error occur.');
+                    }
+                    else {
+                        console.log("user added to database sucessfully.")
+                        res.send('ok');
+                    }
+                });
+            }
+        }
+    });
+    conn.end();
 });
 
 app.get("/username", (req, res) => {
