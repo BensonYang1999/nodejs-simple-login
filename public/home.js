@@ -31,6 +31,7 @@ $(document).ready(function () {
         $('#register-form').hide();
         $('#btn_back').hide();
         $('#login-form').show();
+        $('#btn_register').show();
     });
     $("#register-form").submit((event) => {
         event.preventDefault();
