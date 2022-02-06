@@ -23,8 +23,14 @@ $(document).ready(function () {
     });
     $('#btn_register').click(() => {
         $('#register-form').show();
+        $('#btn_back').show();
         $('#login-form').hide();
         $('#btn_register').hide();
+    });
+    $('#btn_back').click(()=>{
+        $('#register-form').hide();
+        $('#btn_back').hide();
+        $('#login-form').show();
     });
     $("#register-form").submit((event) => {
         event.preventDefault();
@@ -37,6 +43,7 @@ $(document).ready(function () {
                 if (data == 'ok') {
                     alert("Registration success!\nPlease try to login.");
                     $('#register-form').hide();
+                    $('#btn_back').hide();
                     $('#login-form').show();
                 }
                 else {
