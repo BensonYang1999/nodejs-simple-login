@@ -102,8 +102,8 @@ app.post("/login", (req, res) => {
             if (results.length > 0) {
                 const comparison = bcrypt.compareSync(req.body.pwd, results[0].password)
                 if (comparison) {
-                    console.log(`User ${user} login.`);
-                    req.session.name = user;
+                    console.log(`Account ${user} login.`);
+                    req.session.name = results[0].username;
                     res.send('ok');
                     conn.end();
                 }
