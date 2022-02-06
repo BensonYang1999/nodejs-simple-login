@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require('express-session');
+const bp = require('body-parser')
 const app = express();
 const fs = require("fs");
 const port = 8888;
@@ -45,6 +46,8 @@ app.use(session({
     resave: false,
     cookie: { maxAge: 600 * 1000 } // ms
 }));
+app.use(bp.json())
+app.use(bp.urlencoded({ extended: true }))
 
 app.get("/", (req, res) => {
     res.redirect('/home.html');

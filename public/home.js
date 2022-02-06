@@ -11,7 +11,6 @@ $(document).ready(function () {
             url: '/login',
             data: formData,
             success: (data) => {
-                // console.log(data);
                 if (data == 'ok')
                     window.location.replace('/content.html')
                 else{
