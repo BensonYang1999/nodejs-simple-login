@@ -120,7 +120,7 @@ app.post("/login", (req, res) => {
         }
     });
 });
-app.get("/register", (req, res) => {
+app.post("/register", (req, res) => {
     var username = req.body.name;
     var mail = req.body.mail;
     var account = req.body.account;
