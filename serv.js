@@ -68,6 +68,10 @@ app.use(express.static(__dirname + "/public"));
 app.post("/login", (req, res) => {
     var user = req.body.account;
 
+    if (user === "" || req.body.pwd === "") {
+        return res.send('Not allowing empty input!!');
+    }
+
     /*var ret = false;
     for (var i = 0; i < customers.length; i++) {
         if (customers[i].account == user) {
@@ -131,6 +135,9 @@ app.post("/register", (req, res) => {
         "account": account,
         "password": pwd
     };
+    if (username === "" || mail === "" || account === "" || req.body.pwd === "") {
+        return res.send('Not allowing empty input!!');
+    }
 
     /*// json version
     // duplicated account

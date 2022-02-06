@@ -15,22 +15,22 @@
     <p>本測試平台以bcrypt加密使用者密碼，並使用MySQL(MariaDB)儲存使用者資料。</p>
     <form id="login-form">
         <label for="account">帳號：</label>
-        <input type="text" name="account" id="account" pattern="[a-zA-Z0-9]"><br>
+        <input type="text" name="account" id="account" pattern="[a-zA-Z0-9]" required="required"><br>
         <label for="pwd">密碼：</label>
-        <input type="password" name="pwd" id="pwd"><br>
+        <input type="password" name="pwd" id="pwd" required="required"><br>
         <button type="submit">登入</button>
     </form>
     <button id="btn_register">註冊</button>
 
     <form id="register-form" style="display: none;">
         <label for="reg-name">姓名：</label>
-        <input type="text" name="name" id="reg-name"><br>
+        <input type="text" name="name" id="reg-name" required="required"><br>
         <label for="reg-mail">電子郵件：</label>
-        <input type="email" name="mail" id="reg-mail"><br>
+        <input type="email" name="mail" id="reg-mail" required="required"><br>
         <label for="reg-account">帳號：</label>
-        <input type="text" name="account" id="reg-account" pattern="[a-zA-Z0-9]"><br>
+        <input type="text" name="account" id="reg-account" pattern="[a-zA-Z0-9]" required="required"><br>
         <label for="reg-pwd">密碼：</label>
-        <input type="password" name="pwd" id="reg-pwd"><br>
+        <input type="password" name="pwd" id="reg-pwd" required="required"><br>
         <button type="submit">註冊</button>
     </form>
     <button id="btn_back" style="display: none;">返回登入</button>
