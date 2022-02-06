@@ -62,8 +62,8 @@ app.get("/content.html", (req, res, next) => {
 
 app.use(express.static(__dirname + "/public"));
 
-app.get("/login", (req, res) => {
-    var user = req.query.account;
+app.post("/login", (req, res) => {
+    var user = req.body.account;
 
     /*var ret = false;
     for (var i = 0; i < customers.length; i++) {
@@ -97,7 +97,7 @@ app.get("/login", (req, res) => {
         }
         else {
             if (results.length > 0) {
-                const comparison = bcrypt.compareSync(req.query.pwd, results[0].password)
+                const comparison = bcrypt.compareSync(req.body.pwd, results[0].password)
                 if (comparison) {
                     console.log(`User ${user} login.`);
                     req.session.name = user;

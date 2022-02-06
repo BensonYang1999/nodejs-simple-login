@@ -7,7 +7,7 @@ $(document).ready(function () {
         // $('#pwd').val(bcrypt.hashSync($('#pwd').val(), 10));
         var formData = $("#login-form").serialize();
         // socket.emit("log", formData);
-        $.get({
+        $.post({
             url: '/login',
             data: formData,
             success: (data) => {
