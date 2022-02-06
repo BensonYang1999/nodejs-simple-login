@@ -54,3 +54,9 @@ $(document).ready(function () {
         })
     });
 });
+
+// restrict special character
+const name_input = document.getElementById("reg-name");
+name_input.oninput = function(){
+    this.value = this.value.replace(/([^0-9A-z\u4e00-\u9fa5]|[\^\_])/g,'');
+}
