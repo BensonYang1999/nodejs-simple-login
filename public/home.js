@@ -29,13 +29,13 @@ $(document).ready(function () {
     $("#register-form").submit((event) => {
         event.preventDefault();
         var formData = $("#register-form").serialize();
-        $.get({
+        $.post({
             url: '/register',
             data: formData,
             success: (data) => {
                 // console.log(data);
                 if (data == 'ok') {
-                    alert("register successful!\nplease try to login.");
+                    alert("Registration success!\nPlease try to login.");
                     $('#register-form').hide();
                     $('#login-form').show();
                 }

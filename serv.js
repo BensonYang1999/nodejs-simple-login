@@ -121,10 +121,10 @@ app.post("/login", (req, res) => {
     });
 });
 app.get("/register", (req, res) => {
-    var username = req.query.name;
-    var mail = req.query.mail;
-    var account = req.query.account;
-    var pwd = bcrypt.hashSync(req.query.pwd, 10);
+    var username = req.body.name;
+    var mail = req.body.mail;
+    var account = req.body.account;
+    var pwd = bcrypt.hashSync(req.body.pwd, 10);
     var new_user = {
         "username": username,
         "mail": mail,
