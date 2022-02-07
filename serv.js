@@ -129,19 +129,22 @@ app.post("/register", (req, res) => {
     var username = req.body.name;
     input_test = username.replace(/([^0-9A-z\u4e00-\u9fa5\u3105-\u3129]|[\^\_])/g,'');
     if (input_test !== username) {
-        console.log('Hacking detected.');
+        console.log('username hacking detected.');
+        console.log(input_test)
         return res.send('Hacking detected.');
     }
     var mail = req.body.mail;
     input_test = mail.replace(/[a-zA-Z0-9._%@+-]/g,'');
     if (input_test !== mail) {
-        console.log('Hacking detected.');
+        console.log('mail hacking detected.');
+        console.log(input_test)
         return res.send('Hacking detected.');
     }
     var account = req.body.account;
     input_test = account.replace(/[a-zA-Z0-9]/g,'');
     if (input_test !== account) {
-        console.log('Hacking detected.');
+        console.log('account hacking detected.');
+        console.log(input_test)
         return res.send('Hacking detected.');
     }
     var pwd = req.body.pwd;
