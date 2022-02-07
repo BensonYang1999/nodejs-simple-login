@@ -9,35 +9,61 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dcodeIO/bcrypt.js/dist/bcrypt.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>登入系統測試平台</h1>
     <p>本測試平台以bcrypt加密使用者密碼，並使用MySQL(MariaDB)儲存使用者資料。</p>
     <form id="login-form">
-        <label for="account">帳號：</label>
-        <input type="text" name="account" id="account" pattern="[a-zA-Z0-9]+" required="required"><br>
-        <label for="pwd">密碼：</label>
-        <input type="password" name="pwd" id="pwd" required="required"><br>
-        <button type="submit">登入</button>
+        <table>
+            <tbody>
+                <tr>
+                    <td><label for="account">帳號</label></td>
+                    <td><input type="text" name="account" id="account" pattern="[a-zA-Z0-9]+" required="required"></td>
+                </tr>
+                <tr>
+                    <td><label for="pwd">密碼</label></td>
+                    <td><input type="password" name="pwd" id="pwd" required="required"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="submit" style="width: 100%;">登入</button></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
     <button id="btn_register">註冊</button>
 
     <form id="register-form" style="display: none;">
-        <label for="reg-name">姓名：</label>
-        <input type="text" name="name" id="reg-name" required="required"><br>
-        <label for="reg-mail">電子郵件：</label>
-        <input type="email" name="mail" id="reg-mail" required="required"><br>
-        <label for="reg-account">帳號：</label>
-        <input type="text" name="account" id="reg-account" pattern="[a-zA-Z0-9]+" required="required"><br>
-        <label for="reg-pwd">密碼：</label>
-        <input type="password" name="pwd" id="reg-pwd" required="required"><br>
-        <button type="submit">註冊</button>
+        <table>
+            <tbody>
+                <tr>
+                    <td><label for="reg-name">姓名</label></td>
+                    <td><input type="text" name="name" id="reg-name" required="required"></td>
+                </tr>
+                <tr>
+                    <td><label for="reg-mail">電子郵件</label></td>
+                    <td><input type="email" name="mail" id="reg-mail" required="required"></td>
+                </tr>
+                <tr>
+                    <td><label for="reg-account">帳號</label></td>
+                    <td><input type="text" name="account" id="reg-account" pattern="[a-zA-Z0-9]+" required="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="reg-pwd">密碼</label></td>
+                    <td><input type="password" name="pwd" id="reg-pwd" required="required"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="submit" style="width: 100%;">註冊</button></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
     <button id="btn_back" style="display: none;">返回登入</button>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/home.js"></script>
+    <script src="home.js"></script>
 </body>
 
 </html>
