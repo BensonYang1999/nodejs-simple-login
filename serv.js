@@ -67,7 +67,14 @@ app.get("/content.html", (req, res, next) => {
 app.use(express.static(__dirname + "/public"));
 
 app.post("/login", (req, res) => {
+    var input_test;
     var user = req.body.account;
+    input_test = user.replace(/[^a-zA-Z0-9]/g,'');
+    if (input_test !== user) {
+        console.log('username hacking detected.');
+        console.log('input word = ' + user)
+        return res.send('Hacking detected.');
+    }
     if (user === "" || req.body.pwd === "") {
         return res.send('Not allowing empty input!!');
     }
@@ -130,21 +137,21 @@ app.post("/register", (req, res) => {
     input_test = username.replace(/([^0-9A-z\u4e00-\u9fa5\u3105-\u3129]|[\^\_])/g,'');
     if (input_test !== username) {
         console.log('username hacking detected.');
-        console.log(input_test)
+        console.log('input word = ' + username)
         return res.send('Hacking detected.');
     }
     var mail = req.body.mail;
     input_test = mail.replace(/[^a-zA-Z0-9._%@+-]/g,'');
     if (input_test !== mail) {
         console.log('mail hacking detected.');
-        console.log(input_test)
+        console.log('input word = ' + mail)
         return res.send('Hacking detected.');
     }
     var account = req.body.account;
     input_test = account.replace(/[^a-zA-Z0-9]/g,'');
     if (input_test !== account) {
         console.log('account hacking detected.');
-        console.log(input_test)
+        console.log('input word = ' + account)
         return res.send('Hacking detected.');
     }
     var pwd = req.body.pwd;
