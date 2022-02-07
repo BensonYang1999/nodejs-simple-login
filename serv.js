@@ -72,7 +72,9 @@ app.post("/login", [
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.send(errors.array());
+        console.log("express-validator detect error")
+        console.log(errors)
+        return res.send("improper input format");
     }
     var input_test;
     var user = req.body.account;
@@ -145,7 +147,9 @@ app.post("/register", [
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.send(errors.array());
+        console.log("express-validator detect error")
+        console.log(errors)
+        return res.send("improper input format");
     }
 
     var input_test;
@@ -257,7 +261,7 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     // res.redirect('/home.html');
     res.end();
-})
+});
 
 io.sockets.on("connection", socket => {
     var address = socket.handshake.address;
