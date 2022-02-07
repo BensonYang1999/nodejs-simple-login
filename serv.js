@@ -134,14 +134,14 @@ app.post("/register", (req, res) => {
         return res.send('Hacking detected.');
     }
     var mail = req.body.mail;
-    input_test = mail.replace(/[a-zA-Z0-9._%@+-]/g,'');
+    input_test = mail.replace(/[^a-zA-Z0-9._%@+-]/g,'');
     if (input_test !== mail) {
         console.log('mail hacking detected.');
         console.log(input_test)
         return res.send('Hacking detected.');
     }
     var account = req.body.account;
-    input_test = account.replace(/[a-zA-Z0-9]/g,'');
+    input_test = account.replace(/[^a-zA-Z0-9]/g,'');
     if (input_test !== account) {
         console.log('account hacking detected.');
         console.log(input_test)
