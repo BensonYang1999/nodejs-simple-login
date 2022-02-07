@@ -35,6 +35,12 @@ $(document).ready(function () {
     });
     $("#register-form").submit((event) => {
         event.preventDefault();
+        if($("#reg-pwd").val() !== $("#reg-pwd2").val()){
+            alert("請確認密碼");
+            $("#reg-pwd").val('');
+            $("#reg-pwd2").val('');
+            return null;
+        }
         var formData = $("#register-form").serialize();
         $.post({
             url: '/register',
