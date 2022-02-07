@@ -109,7 +109,7 @@ app.post("/login", [
     // res.send('ok');
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + connection.escape(user) + '\'', async function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + conn.escape(user) + '\'', async function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
@@ -219,7 +219,7 @@ app.post("/register", [
     // mysql version
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + connection.escape(account) + '\'', async function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + conn.escape(account) + '\'', async function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
