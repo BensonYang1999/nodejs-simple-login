@@ -70,6 +70,7 @@ app.use(express.static(__dirname + "/public"));
 app.post("/login", [
     check('account').trim().escape()
 ], (req, res) => {
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.send(errors.array());
     }
