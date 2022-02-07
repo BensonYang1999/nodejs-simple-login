@@ -66,8 +66,11 @@ app.get("/content.html", (req, res, next) => {
 app.use(express.static(__dirname + "/public"));
 
 app.post("/login", (req, res) => {
-    var user = req.body.account;
+    if (req.session.name === undefined) {
+        return res.send('permission denied.');
+    }
 
+    var user = req.body.account;
     if (user === "" || req.body.pwd === "") {
         return res.send('Not allowing empty input!!');
     }
@@ -125,6 +128,10 @@ app.post("/login", (req, res) => {
     });
 });
 app.post("/register", (req, res) => {
+    if (req.session.name === undefined) {
+        return res.send('permission denied.');
+    }
+
     var username = req.body.name;
     var mail = req.body.mail;
     var account = req.body.account;
