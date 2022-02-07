@@ -13,6 +13,7 @@ const server = https.createServer(options, app);
 const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
 const mysql = require('mysql');
+const sanitizer = require('sanitize')();
 
 function createConnection() {
     var conn = mysql.createConnection({
@@ -66,10 +67,6 @@ app.get("/content.html", (req, res, next) => {
 app.use(express.static(__dirname + "/public"));
 
 app.post("/login", (req, res) => {
-    if (req.session.name === undefined) {
-        return res.send('permission denied.');
-    }
-
     var user = req.body.account;
     if (user === "" || req.body.pwd === "") {
         return res.send('Not allowing empty input!!');
@@ -128,19 +125,36 @@ app.post("/login", (req, res) => {
     });
 });
 app.post("/register", (req, res) => {
-    if (req.session.name === undefined) {
-        return res.send('permission denied.');
-    }
-
+    var input_test;
     var username = req.body.name;
+    input_test = username.replace(/([^0-9A-z\u4e00-\u9fa5\u3105-\u3129]|[\^\_])/g,'');
+    if (input_test !== username) {
+        console.log('Hacking detected.');
+        return res.send('Hacking detected.');
+    }
     var mail = req.body.mail;
+    input_test = mail.replace(/[a-zA-Z0-9._%@+-]/g,'');
+    if (input_test !== mail) {
+        console.log('Hacking detected.');
+        return res.send('Hacking detected.');
+    }
     var account = req.body.account;
-    var pwd = bcrypt.hashSync(req.body.pwd, 10);
+    input_test = account.replace(/[a-zA-Z0-9]/g,'');
+    if (input_test !== account) {
+        console.log('Hacking detected.');
+        return res.send('Hacking detected.');
+    }
+    var pwd = req.body.pwd;
+    /*input_test = pwd.replace(/([^0-9A-z\u4e00-\u9fa5\u3105-\u3129]|[\^\_])/g,'');
+    if (input_test !== pwd) {
+        console.log('Hacking detected.');
+        return res.send('Hacking detected.');
+    }*/
     var new_user = {
         "username": username,
         "mail": mail,
         "account": account,
-        "password": pwd
+        "password": bcrypt.hashSync(pwd, 10)
     };
     if (username === "" || mail === "" || account === "" || req.body.pwd === "") {
         return res.send('Not allowing empty input!!');
