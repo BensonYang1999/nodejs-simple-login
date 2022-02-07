@@ -14,6 +14,7 @@ const io = require("socket.io")(server);
 const bcrypt = require("bcrypt");
 const mysql = require('mysql');
 const sanitizer = require('sanitize')();
+const { check, validationResult } = require('express-validator');
 
 function createConnection() {
     var conn = mysql.createConnection({
@@ -66,10 +67,15 @@ app.get("/content.html", (req, res, next) => {
 
 app.use(express.static(__dirname + "/public"));
 
-app.post("/login", (req, res) => {
+app.post("/login", [
+    check('account').trim().escape()
+], (req, res) => {
+    if (!errors.isEmpty()) {
+        return res.send(errors.array());
+    }
     var input_test;
     var user = req.body.account;
-    input_test = user.replace(/[^a-zA-Z0-9]/g,'');
+    input_test = user.replace(/[^a-zA-Z0-9]/g, '');
     if (input_test !== user) {
         console.log('username hacking detected.');
         console.log('input word = ' + user)
@@ -103,7 +109,7 @@ app.post("/login", (req, res) => {
     // res.send('ok');
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + user + '\'', async function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + connection.escape(user) + '\'', async function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
@@ -131,24 +137,33 @@ app.post("/login", (req, res) => {
         }
     });
 });
-app.post("/register", (req, res) => {
+app.post("/register", [
+    check('name').trim().escape(),
+    check('mail').isEmail().normalizeEmail(),
+    check('account').trim().escape(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.send(errors.array());
+    }
+
     var input_test;
     var username = req.body.name;
-    input_test = username.replace(/([^0-9A-z\u4e00-\u9fa5\u3105-\u3129]|[\^\_])/g,'');
+    input_test = username.replace(/([^0-9A-z\u4e00-\u9fa5\u3105-\u3129]|[\^\_])/g, '');
     if (input_test !== username) {
         console.log('username hacking detected.');
         console.log('input word = ' + username)
         return res.send('Hacking detected.');
     }
     var mail = req.body.mail;
-    input_test = mail.replace(/[^a-zA-Z0-9._%@+-]/g,'');
+    input_test = mail.replace(/[^a-zA-Z0-9._%@+-]/g, '');
     if (input_test !== mail) {
         console.log('mail hacking detected.');
         console.log('input word = ' + mail)
         return res.send('Hacking detected.');
     }
     var account = req.body.account;
-    input_test = account.replace(/[^a-zA-Z0-9]/g,'');
+    input_test = account.replace(/[^a-zA-Z0-9]/g, '');
     if (input_test !== account) {
         console.log('account hacking detected.');
         console.log('input word = ' + account)
@@ -204,7 +219,7 @@ app.post("/register", (req, res) => {
     // mysql version
     conn = createConnection();
     conn.connect();
-    conn.query('SELECT * FROM users where account = \'' + account + '\'', async function (error, results, fields) {
+    conn.query('SELECT * FROM users where account = \'' + connection.escape(account) + '\'', async function (error, results, fields) {
         if (error) {
             console.log(error);
             res.send('Error occur.');
